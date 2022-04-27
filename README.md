@@ -9,3 +9,17 @@ While I've provided a method of relating receipt schema to user schema and to re
 
 The PDF file shows the ER diagram of the 4 tables. Note that I excluded some columns for rewardsReceiptItemList, as there are too many columns for the schema and the excluded columns are, after careful inspection, of no importance when considering problem 3.
 
+## Write a query that directly answers a predetermined question from a business stakeholder
+The SQL code is included in the repository. I picked the first bullet point to answer. I assume that we only need brand code and their number in different receipts. I joined the two tables by using brandCode, cpg_id and rewardsProductPartnerId, as mentioned above.
+
+##  Evaluate Data Quality Issues in the Data Provided
+While doing exploratory analysis, as mentioned in Problem 1, I found out that there are data that are wrapped inside brackets in columns, such as id column, cpg column, and also receiptItemList. While it may be an easier way to store data in JSON, I do have to unwrap those columns before proceeding.
+
+Besides the wrapped data in columns, I also noticed that there are a lot of null values in brandCode column in both brand schema and receipt item list schema. Using Python, I found that 20% of the brandCode column in the brand schema are null values, and up to 64% of the brandCode column in receipt item list schema are null values. The null values in both schemas can create holes in the data, as it means that for the brand schema, some listed brands cannot be found via brandCode, and for the receipt item list schema, some items cannot be mapped to the brand schema, thus preventing us to know which item belongs to which brand.
+
+In addition, some brandCodes in receipt item list schema are spelled differently than those in the brand schema, for example, Ben and Jerry's is spelled as Ben and Jerrys in receipt item list schema, while in the brand schema it is spelled as Ben & Jerry's. This is shown in the Python code provided. This can create inconsistencies when mapping items to brands, and worse, it could be infeasible to join both schemas. 
+
+Lastly, around 80% of the brandCodes in receipt item list schema cannot be mapped into the brand schema, as the brand schema is either missing the brandCodes or have the brandCodes spelled differently than those in receipt item list. This can lead into the problem of not being able to correctly find the brands of each item in the receipt list.
+
+## Communicate with Stakeholders
+The PDF file is the email I'd send to stakeholders detailing my questions regarding the data.
